@@ -36,7 +36,7 @@ class Zwierze(Organizm):
             randy = kordynaty[randint(0, 2)]
 
             przemieszczenie = Wektor2d(randy, randx)
-            self._zmienpolozenie(przemieszczenie)
+            self._zmienPolozenie(przemieszczenie)
 
             if not (wczesniejsze == self._polozenie or
                     (self.czyMaDobryWech() and

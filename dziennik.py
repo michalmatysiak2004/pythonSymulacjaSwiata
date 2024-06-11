@@ -9,9 +9,7 @@ class Dziennik:
 
         self.__komunikaty.append(komunikat)
 
-    def czysc(self):
 
-        self.__komunikaty = []
 
     def wypisz(self) -> str:
 

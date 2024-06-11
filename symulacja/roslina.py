@@ -2,7 +2,7 @@ import copy
 from random import random
 
 from wektor2d import Wektor2d
-from organizm import Organizm
+from symulacja.organizm import Organizm
 
 
 class Roslina(Organizm):

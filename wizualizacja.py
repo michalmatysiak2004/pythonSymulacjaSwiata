@@ -7,9 +7,13 @@ from symulacja.organizm import Organizm
 from wektor2d import Wektor2d
 from symulacja.zwierzeta.czlowiek import Czlowiek
 from symulacja.swiat import Swiat
-
+from symulacja.zwierzeta.wilk import Wilk
 from random import randint
-
+from symulacja.zwierzeta.owca import Owca
+from symulacja.zwierzeta.lis import Lis
+from symulacja.rosliny.guarana import Guarana
+from symulacja.rosliny.mlecz import Mlecz
+from symulacja.rosliny.trawa import Trawa
 
 class Wizualizacja(Canvas):
 
@@ -58,19 +62,27 @@ class Wizualizacja(Canvas):
                     self.create_rectangle(x1, y1, x2, y2, fill=org.rysowanie())
 
     def __draw_hex(self):
+        hex_size = self.__rozmiarZwierzecia / 2  # Half size for radius
+        hex_height = math.sqrt(3) * hex_size
+        hex_width = 2 * hex_size
+        vertical_spacing = hex_height * 3 / 4  # Vertical spacing between rows
+
         for y in range(self.__wysokosc):
             for x in range(self.__szerokosc):
                 org = self.__swiat.getOrganizmNaPozycji(Wektor2d(y, x))
 
                 points = []
 
-                xtemp = x
-                if y % 2 == 0:
-                    xtemp = x + 0.5
+                # Calculate the position of the hexagon's center
+                xtemp = x * hex_width * 3 / 5
+                ytemp = y * vertical_spacing
+                if y % 2 == 1:
+                    xtemp += hex_width / 2
 
-                for i in range(0, 6):
-                    xval = xtemp * self.__rozmiarZwierzecia + self.__rozmiarZwierzecia / 2 * math.sin(i * 2 * math.pi / 6)
-                    yval = y * self.__rozmiarZwierzecia + self.__rozmiarZwierzecia / 2 * math.cos(i * 2 * math.pi / 6)
+                for i in range(6):
+                    angle = math.pi / 3 * i
+                    xval = xtemp + hex_size * math.cos(angle)
+                    yval = ytemp + hex_size * math.sin(angle)
 
                     points.append(xval)
                     points.append(yval)
@@ -154,14 +166,14 @@ class Wizualizacja(Canvas):
         p0 = Wektor2d(0, 0)
 
         organizmy = [
-            # Wilk(p0),
-            # Owca(p0),
-            # Lis(p0),
+             Wilk(p0),
+             Owca(p0),
+             Lis(p0),
             # Zolw(p0),
             # Antylopa(p0),
-            # Trawa(p0),
-            # Mlecz(p0),
-            # Guarana(p0),
+             Trawa(p0),
+             Mlecz(p0),
+             Guarana(p0),
             # WilczeJagody(p0),
             # BarszczSosnowskiego(p0),
             # Cyberowca(p0)
