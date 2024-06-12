@@ -1,7 +1,7 @@
 import copy
 from random import random
 
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 from symulacja.organizm import Organizm
 
 

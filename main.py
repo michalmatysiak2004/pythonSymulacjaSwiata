@@ -1,5 +1,4 @@
-from tkinter import *
-from Aplikacja import Aplikacja
+from gui.Aplikacja import Aplikacja
 
 
 if(__name__ == "__main__"):

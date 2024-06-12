@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 
 
 class Organizm(ABC):
@@ -111,7 +111,8 @@ class Organizm(ABC):
     def setSwiat(self, swiat):
 
         self._swiat = swiat
-
+    def getSwiat(self):
+        return self._swiat
     @abstractmethod
     def __str__(self):
         pass
@@ -129,10 +130,7 @@ class Organizm(ABC):
         pass
 
 
-    @abstractmethod
-    def rysowanie(self) -> str:
 
-        pass
 
 
     @abstractmethod

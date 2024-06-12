@@ -1,11 +1,11 @@
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 from symulacja.zwierze import Zwierze
 
 
 
 class Wilk(Zwierze):
 
-    INICJATYWA = 4
+    INICJATYWA = 5
     SILA = 9
 
 
@@ -14,7 +14,7 @@ class Wilk(Zwierze):
 
 
     def __str__(self):
-        return "WILK"
+        return "wilk"
 
 
     def rysowanie(self) -> str:

@@ -1,6 +1,6 @@
 from random import random
 
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 from symulacja.zwierze import Zwierze
 
 from symulacja.swiat import Swiat
@@ -57,12 +57,11 @@ class Czlowiek(Zwierze):
 
 
     def rysowanie(self) -> str:
-
-        return "#FFFD96"
+        return "FFFFFF"
 
 
     def __str__(self):
-        return "CZLOWIEK"
+        return "czlowiek"
 
     def getTurySpecjalne(self):
         return self.__turySpecjalne

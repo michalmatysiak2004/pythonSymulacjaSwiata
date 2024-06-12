@@ -1,4 +1,4 @@
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 from symulacja.zwierze import Zwierze
 
 
@@ -11,4 +11,7 @@ class Owca(Zwierze):
 
 
     def __str__ (self):
-        return "OWCA"
+        return "owca"
+
+    def rysowanie(self) -> str:
+        return "XD"

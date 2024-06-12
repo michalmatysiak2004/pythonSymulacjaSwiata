@@ -1,5 +1,5 @@
 from symulacja.roslina import Roslina
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 
 
 class Trawa(Roslina):
@@ -10,4 +10,4 @@ class Trawa(Roslina):
 
 
     def __str__(self):
-        return "TRAWA"
+        return "trawa"

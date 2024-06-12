@@ -1,11 +1,24 @@
 from tkinter import *
-from wizualizacja import Wizualizacja
-from wektor2d import Wektor2d
-from tkinter import ttk, messagebox, filedialog
-from tkinter.messagebox import showinfo
+from gui.wizualizacja import Wizualizacja
+from inne.wektor2d import Wektor2d
+from tkinter import messagebox, filedialog
 from symulacja.swiat import Swiat
+from inne.menedzerplikow import MenedzerPlikow
+from symulacja.swiat import Organizm
 from symulacja.zwierzeta.czlowiek import Czlowiek
 from symulacja.zwierzeta.wilk import Wilk
+from symulacja.zwierzeta.owca import Owca
+from symulacja.zwierzeta.lis import Lis
+from symulacja.zwierzeta.antylopa import Antylopa
+from symulacja.zwierzeta.zolw import Zolw
+from symulacja.rosliny.guarana import Guarana
+from symulacja.rosliny.mlecz import Mlecz
+from symulacja.rosliny.trawa import Trawa
+from symulacja.rosliny.barszcz_sosnowskiego import Barszcz_sosnowskiego
+from symulacja.rosliny.wilcze_jagody import Wilcze_Jagody
+import random
+from symulacja.zwierzeta.cyberowca import Cyberowca
+
 class Aplikacja(Tk):
 
     TYTUL = "Symulacja"
@@ -53,7 +66,7 @@ class Aplikacja(Tk):
 
     def __inicjujAplikacje(self):
         self._wizualizacja = Wizualizacja(self, int(Aplikacja.DOMYSLNA_WYSOKOSC * 9 / 10), self.__bazowySwiat())
-
+        self._menedzerPlikow = MenedzerPlikow()
         self.geometry(f"{Aplikacja.DOMYSLNA_SZEROKOSC}x{Aplikacja.DOMYSLNA_WYSOKOSC}")
         self.minsize(Aplikacja.DOMYSLNA_SZEROKOSC, Aplikacja.DOMYSLNA_WYSOKOSC)
 
@@ -70,7 +83,7 @@ class Aplikacja(Tk):
         menuPlik = Menu(menuBar, tearoff=False)
 
         menuNowy.add_command(label="Bazowy_Kartezjanski", command=self.__bazowyCallback)
-        menuNowy.add_command(label="Bazowy_Hex", command=self.__bazowyHexCallback)
+
 
         menuPlik.add_command(label="Wczytaj", command=self.__wczytajCallback)
         menuPlik.add_command(label="Zapisz", command=self.__zapiszCallback)
@@ -102,7 +115,7 @@ class Aplikacja(Tk):
         self.dziennikText = Text(textFrame, bg="yellow", wrap=WORD, yscrollcommand=scrollbar.set)
         self.dziennikText.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbar.config(command=self.dziennikText.yview)
-        self.dziennikText.config(text="Komunikaty")
+
         # Wyłączenie bezpośredniej edycji w widgetcie Text
         self.dziennikText.config(state=DISABLED)
 
@@ -121,9 +134,6 @@ class Aplikacja(Tk):
 
         self._wizualizacja.setSwiat(sw)
 
-    def __bazowyHexCallback(self):
-        self._wizualizacja.setSwiat(self.__bazowySwiat(Swiat.Typ.HEX))
-
     def __zapiszCallback(self):
         fname = filedialog.asksaveasfilename()
         if fname == "":
@@ -131,17 +141,56 @@ class Aplikacja(Tk):
 
         self._menedzerPlikow.zapisz(self._wizualizacja.getSwiat(), fname)
 
+    def update_dziennik(self):
+
+        self.dziennikText.config(state='normal')
+        self.dziennikText.delete(1.0, "end")
+        self.dziennikText.insert("end", self._wizualizacja.getSwiat().getDziennik().wypisz())
+        self.dziennikText.config(state=DISABLED)
     def __nastepnaTuraCallback(self):
         self._wizualizacja.nastepnaTura()
         self._wizualizacja.paint()
+        self.update_dziennik()
 
+    def losujPozycje(self,wysokosc_swiata, szerokosc_swiata):
+        x = random.randint(0, szerokosc_swiata - 1)
+        y = random.randint(0, wysokosc_swiata - 1)
+        pozycja = Wektor2d(y, x)
+        if pozycja.pozaGranicami(wysokosc_swiata, szerokosc_swiata):
+            return self.losujPozycje(wysokosc_swiata, szerokosc_swiata)
+        return pozycja
 
+    def __bazowySwiat(self):
 
-    def __bazowySwiat(self, typ=Swiat.Typ.KARTEZJANSKI):
-        return Swiat(self.__wysokosc_swiata, self.__szerokosc_swiata, [
-            Czlowiek(Wektor2d(5, 5)),
-            Wilk(Wektor2d(3,3))
-        ], typ)
+        swiat = Swiat(self.__wysokosc_swiata, self.__szerokosc_swiata, [])
+        swiat.addOrganizm(Czlowiek(Wektor2d(0, 0)))
+        swiat.addOrganizm(Barszcz_sosnowskiego(Wektor2d(19, 19)))
+        for i in range(int(0.2 * self.__wysokosc_swiata * self.__wysokosc_swiata)):
+            choice = random.randint(1, 11)
+            pozycja = self.losujPozycje(self.__wysokosc_swiata, self.__szerokosc_swiata)
+            if choice == 1:
+                swiat.addOrganizm(Wilk(pozycja))
+            elif choice == 2:
+                swiat.addOrganizm(Owca(pozycja))  # Define Owca class if necessary
+            elif choice == 3:
+                swiat.addOrganizm(Lis(pozycja))
+            elif choice == 4:
+                swiat.addOrganizm(Zolw(pozycja))  # Define Zolw class if necessary
+            elif choice == 5:
+                swiat.addOrganizm(Antylopa(pozycja))  # Define Antylopa class if necessary
+            elif choice == 6:
+                swiat.addOrganizm(Trawa(pozycja))  # Define Trawa class if necessary
+            elif choice == 7:
+                swiat.addOrganizm(Mlecz(pozycja))  # Define Mlecz class if necessary
+            elif choice == 8:
+                swiat.addOrganizm(Guarana(pozycja))  # Define Guarana class if necessary
+            elif choice == 9:
+                swiat.addOrganizm(Wilcze_Jagody(pozycja))  # Define WilczeJagody class if necessary
+            elif choice == 10:
+                swiat.addOrganizm(Barszcz_sosnowskiego(pozycja))  # Define BarszczSosnowskiego class if necessary
+            elif choice == 11:
+                swiat.addOrganizm(Cyberowca(pozycja))
+        return swiat
 
     def __pustySwiat(self):
         return Swiat(self.__wysokosc_swiata, self.__szerokosc_swiata)

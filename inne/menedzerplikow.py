@@ -1,7 +1,8 @@
 
 
 from symulacja.swiat import Swiat
-
+from symulacja.organizm import Organizm
+from symulacja.zwierzeta.czlowiek import Czlowiek
 class MenedzerPlikow:
 
     def zapisz(self, swiat: Swiat, name: str):

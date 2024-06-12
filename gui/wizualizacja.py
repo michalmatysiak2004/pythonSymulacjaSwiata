@@ -1,20 +1,17 @@
 import copy
 import math
 from tkinter import *
-from tkinter import ttk
-from tkinter.messagebox import showinfo
 from symulacja.organizm import Organizm
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 from symulacja.zwierzeta.czlowiek import Czlowiek
 from symulacja.swiat import Swiat
 from symulacja.zwierzeta.wilk import Wilk
-from random import randint
 from symulacja.zwierzeta.owca import Owca
 from symulacja.zwierzeta.lis import Lis
 from symulacja.rosliny.guarana import Guarana
 from symulacja.rosliny.mlecz import Mlecz
 from symulacja.rosliny.trawa import Trawa
-
+from PIL import Image, ImageTk
 class Wizualizacja(Canvas):
 
     __KOLOR_TLA = "white"
@@ -27,25 +24,36 @@ class Wizualizacja(Canvas):
         self.__swiat = swiat
 
         self.__rozmiarZwierzecia = int(self.__wysokoscOkienka / self.__wysokosc)
-
+        self.__images = {}
         super().__init__(master, height=wysokoscOkienka, width=self.__rozmiarZwierzecia * self.__szerokosc)
 
         self.__eventy()
 
         self.focus_set()
 
+        self.pack()
+
     def paint(self):
         self.create_rectangle(0, 0, self.__rozmiarZwierzecia * self.__szerokosc, self.__rozmiarZwierzecia * self.__wysokosc, fill=Wizualizacja.__KOLOR_TLA)
-
-        if self.__swiat.getTyp() == Swiat.Typ.KARTEZJANSKI:
-            self.__draw_cartesian()
-        else:
-            self.__draw_hex()
+        self.__draw_cartesian()
 
         if self.__maCzlowieka():
             self.czlowiekInfo()
 
+    def __load_images(self):
+        nazwy_organizmow = [
+            "czlowiek", "wilk", "owca", "antylopa", "wilcze_jagody",
+            "lis", "guarana", "barszcz_sosnowskiego", "trawa", "mlecz", "zolw", "cyberowca"
+        ]
+        for nazwa in nazwy_organizmow:
+            image_path = f"C:/Users/polsk/PycharmProjects/pythonProject/gui/zdjecia/{nazwa}.png"
+            image = Image.open(image_path)  # Otwórz obraz za pomocą PIL
+            image = image.resize((self.__rozmiarZwierzecia, self.__rozmiarZwierzecia))
+
+            self.__images[nazwa] = ImageTk.PhotoImage(image)  # Konwertuj obraz do formatu obsługiwanego przez tkinter
     def __draw_cartesian(self):
+        self.__load_images()  # Load images before drawing
+
         for y in range(self.__wysokosc):
             for x in range(self.__szerokosc):
                 org = self.__swiat.getOrganizmNaPozycji(Wektor2d(y, x))
@@ -59,39 +67,12 @@ class Wizualizacja(Canvas):
                 self.create_rectangle(x1, y1, x2, y2, outline="black")
 
                 if org is not None:
-                    self.create_rectangle(x1, y1, x2, y2, fill=org.rysowanie())
+                    image_path = org.__str__()
+                    if image_path in self.__images:
+                        image = self.__images[image_path]
 
-    def __draw_hex(self):
-        hex_size = self.__rozmiarZwierzecia / 2  # Half size for radius
-        hex_height = math.sqrt(3) * hex_size
-        hex_width = 2 * hex_size
-        vertical_spacing = hex_height * 3 / 4  # Vertical spacing between rows
+                        self.create_image(x1, y1, anchor='nw', image=image)
 
-        for y in range(self.__wysokosc):
-            for x in range(self.__szerokosc):
-                org = self.__swiat.getOrganizmNaPozycji(Wektor2d(y, x))
-
-                points = []
-
-                # Calculate the position of the hexagon's center
-                xtemp = x * hex_width * 3 / 5
-                ytemp = y * vertical_spacing
-                if y % 2 == 1:
-                    xtemp += hex_width / 2
-
-                for i in range(6):
-                    angle = math.pi / 3 * i
-                    xval = xtemp + hex_size * math.cos(angle)
-                    yval = ytemp + hex_size * math.sin(angle)
-
-                    points.append(xval)
-                    points.append(yval)
-
-                # Draw the border for each hexagon
-                self.create_polygon(points, outline="black", fill=Wizualizacja.__KOLOR_TLA)
-
-                if org is not None:
-                    self.create_polygon(points, fill=org.rysowanie())
 
     def __eventy(self):
         def klik(event):

@@ -2,7 +2,7 @@ import copy
 from random import randint
 
 from symulacja.organizm import Organizm
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 
 
 class Zwierze(Organizm):
@@ -98,7 +98,8 @@ class Zwierze(Organizm):
                 self.__cofnijSie()
                 return
 
-            self._swiat.getDziennik().wpisz(f"{str(drugi)} zjada {str(self)}")
+            self._swiat.getDziennik().wpisz(f"{str(drugi)} zjada {str(self)} na polu {self.getPolozenie().getX()} ,"
+                                            f" {self.getPolozenie().getY()}")
             self.zabij()
             self.dodajModyfikator(drugi)
 
@@ -109,7 +110,7 @@ class Zwierze(Organizm):
             self.__cofnijSie()
             return
 
-        self._swiat.getDziennik().wpisz(f"{str(self)} zjada {str(drugi)}")
+        self._swiat.getDziennik().wpisz(f"{str(self)} zjada {str(drugi)} na polu {self.getPolozenie().getX()} , {self.getPolozenie().getY()}")
         drugi.zabij()
         drugi.dodajModyfikator(self)
 

@@ -1,5 +1,5 @@
 from symulacja.zwierze import Zwierze
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 
 class Lis(Zwierze):
     INICJATYWA = 7
@@ -17,4 +17,7 @@ class Lis(Zwierze):
 
 
     def __str__(self):
-        return "LIS"
+        return "lis"
+
+    def rysowanie(self) -> str:
+        return "XD"

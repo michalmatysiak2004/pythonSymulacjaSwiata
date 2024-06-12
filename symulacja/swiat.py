@@ -1,16 +1,14 @@
 import copy
 from random import randint
 
-from dziennik import Dziennik
-from wektor2d import Wektor2d
+from inne.dziennik import Dziennik
+from inne.wektor2d import Wektor2d
 from symulacja.organizm import Organizm
 from enum import Enum
 
 class Swiat:
 
-    class Typ(Enum):
-        KARTEZJANSKI = 0,
-        HEX = 1
+
 
     class Ruch(Enum):
         GORA = 0
@@ -20,9 +18,8 @@ class Swiat:
         SPECJALNY = 4
         STOJ = 5
 
-    def getTyp(self):
-        return self.__typ
-    def __init__(self, wysokosc: int, szerokosc: int, organizmy=None, typ = Typ.KARTEZJANSKI):
+
+    def __init__(self, wysokosc: int, szerokosc: int, organizmy=None):
 
         if organizmy is None:
             organizmy = []
@@ -36,7 +33,7 @@ class Swiat:
         self.__nrTury = 0
         self.__dziennik = Dziennik()
         self.__ruch = Swiat.Ruch.STOJ
-        self.__typ = typ
+
 
 
 
@@ -65,7 +62,7 @@ class Swiat:
 
     def wykonajTure(self):
 
-        #self.__dziennik.czysc()
+
 
         for org in self.__organizmy:
             org.nowaTura()
@@ -73,7 +70,7 @@ class Swiat:
         self.__nrTury+=1
         self.__ruchOrganizmow()
 
-        self.__organizmy = [x for x in self.__organizmy if x.isZywy()] # pozbadz sie zwlok
+        self.__organizmy = [x for x in self.__organizmy if x.isZywy()]
 
     def addOrganizm(self, org: Organizm):
         org.setSwiat(self)
@@ -100,8 +97,6 @@ class Swiat:
 
             for dx in [-1 * zasieg, 0, zasieg]:
 
-                if self.__typ == Swiat.Typ.HEX and ( (dy == -1 and dx == -1) or (dy == 1 and dx == -1)):
-                    continue
 
                 punkt =  Wektor2d(dy,dx) + p
 

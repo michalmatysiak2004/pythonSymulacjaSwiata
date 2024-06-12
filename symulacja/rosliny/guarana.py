@@ -1,5 +1,5 @@
 from symulacja.roslina import Roslina
-from wektor2d import Wektor2d
+from inne.wektor2d import Wektor2d
 
 
 class Guarana(Roslina):
@@ -12,8 +12,11 @@ class Guarana(Roslina):
 
 
     def dodajModyfikator(self, other):
-        other.setSila(Guarana.ZWIEKSZENIE_SILY + other.getSila)
+        other.setSila(Guarana.ZWIEKSZENIE_SILY + other.getSila())
 
 
     def __str__(self):
-        return "GUARANA"
+        return "guarana"
+
+    def rysowanie(self):
+        f"{self.__str__()}.png"
