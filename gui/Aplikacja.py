@@ -27,12 +27,12 @@ class Aplikacja(Tk):
 
     def __init__(self):
         super().__init__()
-        self.withdraw()  # Ukryj główne okno aplikacji na czas wprowadzania wymiarów
+        self.withdraw()
 
         self.__wysokosc_swiata = None
         self.__szerokosc_swiata = None
 
-        self.__pytajOWymiarySwiata()  # Pokaż okno dialogowe
+        self.__pytajOWymiarySwiata()
 
     def __pytajOWymiarySwiata(self):
         dialog = Toplevel(self)
@@ -57,8 +57,8 @@ class Aplikacja(Tk):
             if self.__wysokosc_swiata <= 0 or self.__szerokosc_swiata <= 0:
                 raise ValueError
 
-            dialog.destroy()  # Zamknij okno dialogowe
-            self.deiconify()  # Pokaż główne okno aplikacji
+            dialog.destroy()
+            self.deiconify()
             self.__inicjujAplikacje()
 
         except ValueError:
@@ -145,6 +145,7 @@ class Aplikacja(Tk):
 
         self.dziennikText.config(state='normal')
         self.dziennikText.delete(1.0, "end")
+
         self.dziennikText.insert("end", self._wizualizacja.getSwiat().getDziennik().wypisz())
         self.dziennikText.config(state=DISABLED)
     def __nastepnaTuraCallback(self):
@@ -164,7 +165,8 @@ class Aplikacja(Tk):
 
         swiat = Swiat(self.__wysokosc_swiata, self.__szerokosc_swiata, [])
         swiat.addOrganizm(Czlowiek(Wektor2d(0, 0)))
-        swiat.addOrganizm(Barszcz_sosnowskiego(Wektor2d(19, 19)))
+
+        """
         for i in range(int(0.2 * self.__wysokosc_swiata * self.__wysokosc_swiata)):
             choice = random.randint(1, 11)
             pozycja = self.losujPozycje(self.__wysokosc_swiata, self.__szerokosc_swiata)
@@ -190,6 +192,7 @@ class Aplikacja(Tk):
                 swiat.addOrganizm(Barszcz_sosnowskiego(pozycja))  # Define BarszczSosnowskiego class if necessary
             elif choice == 11:
                 swiat.addOrganizm(Cyberowca(pozycja))
+                """
         return swiat
 
     def __pustySwiat(self):

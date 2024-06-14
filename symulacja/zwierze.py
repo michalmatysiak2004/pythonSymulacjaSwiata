@@ -26,7 +26,11 @@ class Zwierze(Organizm):
 
         self._rozmnozylSie = False
     def losowyruch(self, zasieg: int):
-        # dodac warunek czyMadobrywech i czy wszyzcy sasiedzi sa silniejsi
+
+        if  self.wszyscySasiedziSilniejsi() and self.czyMaDobryWech():
+            self._swiat.getDziennik().wpisz(f"Lis ucieka")
+            return
+
 
         kordynaty = [-1 * zasieg, 0, zasieg]
         wczesniejsze = Wektor2d(self._polozenie.getY(), self._polozenie.getX())
@@ -115,18 +119,18 @@ class Zwierze(Organizm):
         drugi.dodajModyfikator(self)
 
     def wszyscySasiedziSilniejsi(self) -> bool:
-
+        print("wszyscy silnijsi")
         for y in range(-1,2):
             for x in range(-1,2):
 
                 pol = Wektor2d(y,x)
 
                 org = self._swiat.getOrganizmNaPozycji(self.getPolozenie() + pol)
-
+                print("tutu")
                 if org != self and (org is None or org.getSila() <= self.getSila()):
 
                     return False
 
-
+        print("wszyscy silnijsi")
         return True
 

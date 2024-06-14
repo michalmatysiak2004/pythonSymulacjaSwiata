@@ -1,15 +1,29 @@
 
-
+from symulacja.swiat import Organizm
+from symulacja.zwierzeta.czlowiek import Czlowiek
+from symulacja.zwierzeta.wilk import Wilk
+from symulacja.zwierzeta.owca import Owca
+from symulacja.zwierzeta.lis import Lis
+from symulacja.zwierzeta.antylopa import Antylopa
+from symulacja.zwierzeta.zolw import Zolw
+from symulacja.rosliny.guarana import Guarana
+from symulacja.rosliny.mlecz import Mlecz
+from symulacja.rosliny.trawa import Trawa
+from symulacja.rosliny.barszcz_sosnowskiego import Barszcz_sosnowskiego
+from symulacja.rosliny.wilcze_jagody import Wilcze_Jagody
 from symulacja.swiat import Swiat
 from symulacja.organizm import Organizm
 from symulacja.zwierzeta.czlowiek import Czlowiek
+from inne.wektor2d import Wektor2d
+import copy
+from symulacja.zwierzeta.cyberowca import Cyberowca
 class MenedzerPlikow:
 
     def zapisz(self, swiat: Swiat, name: str):
 
         with open(name, "w") as out:
 
-            out.write(f"{swiat.getNrTury()} {swiat.getWysokosc()} {swiat.getSzerokosc()} {'KART' if swiat.getTyp() == Swiat.Typ.KARTEZJANSKI else 'HEX'}\n")
+            out.write(f"{swiat.getNrTury()} {swiat.getWysokosc()} {swiat.getSzerokosc()} \n")
 
             for org in swiat.getOrganizmy():
 
@@ -32,7 +46,7 @@ class MenedzerPlikow:
 
                 t, h, w, typ = [el for el in r[0].split(" ")]
 
-                sw = Swiat(int(h), int(w), None, Swiat.Typ.HEX if typ == "HEX" else Swiat.Typ.KARTEZJANSKI)
+                sw = Swiat(int(h), int(w), None)
                 sw.setNrTury(int(t))
 
 
@@ -70,18 +84,18 @@ class MenedzerPlikow:
         p0 = Wektor2d(0, 0)
 
         organizmy = [
-           # Czlowiek(p0),
-           # Wilk(p0),
-           # Owca(p0),
-           # Lis(p0),
-            #Zolw(p0),
-           # Antylopa(p0),
-           # Trawa(p0),
-           # Mlecz(p0),
-           # Guarana(p0),
-           # WilczeJagody(p0),
-           # BarszczSosnowskiego(p0),
-           # Cyberowca(p0)
+            Czlowiek(p0),
+            Wilk(p0),
+            Owca(p0),
+            Lis(p0),
+            Zolw(p0),
+            Antylopa(p0),
+            Trawa(p0),
+            Mlecz(p0),
+            Guarana(p0),
+            Wilcze_Jagody(p0),
+            Barszcz_sosnowskiego(p0),
+            Cyberowca(p0)
 
         ]
 

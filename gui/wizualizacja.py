@@ -5,12 +5,19 @@ from symulacja.organizm import Organizm
 from inne.wektor2d import Wektor2d
 from symulacja.zwierzeta.czlowiek import Czlowiek
 from symulacja.swiat import Swiat
+from symulacja.zwierzeta.czlowiek import Czlowiek
 from symulacja.zwierzeta.wilk import Wilk
 from symulacja.zwierzeta.owca import Owca
 from symulacja.zwierzeta.lis import Lis
+from symulacja.zwierzeta.antylopa import Antylopa
+from symulacja.zwierzeta.zolw import Zolw
 from symulacja.rosliny.guarana import Guarana
 from symulacja.rosliny.mlecz import Mlecz
 from symulacja.rosliny.trawa import Trawa
+from symulacja.rosliny.barszcz_sosnowskiego import Barszcz_sosnowskiego
+from symulacja.rosliny.wilcze_jagody import Wilcze_Jagody
+import random
+from symulacja.zwierzeta.cyberowca import Cyberowca
 from PIL import Image, ImageTk
 class Wizualizacja(Canvas):
 
@@ -23,7 +30,7 @@ class Wizualizacja(Canvas):
 
         self.__swiat = swiat
 
-        self.__rozmiarZwierzecia = int(self.__wysokoscOkienka / self.__wysokosc)
+        self.__rozmiarZwierzecia = 50
         self.__images = {}
         super().__init__(master, height=wysokoscOkienka, width=self.__rozmiarZwierzecia * self.__szerokosc)
 
@@ -103,6 +110,8 @@ class Wizualizacja(Canvas):
 
     def setSwiat(self, swiat: Swiat):
         self.__swiat = swiat
+        self.__wysokosc = swiat.getWysokosc()
+        self.__szerokosc = swiat.getSzerokosc()
         self.paint()
 
     def czlowiekInfo(self):
@@ -134,9 +143,9 @@ class Wizualizacja(Canvas):
         return False
 
     def __initPopup(self, event):
+
         popup = Toplevel(self)
-        popup.title("organizmy")
-        popup.attributes('-type', 'dialog')
+        popup.title("Organizmy")
 
         popup.geometry(f"150x350+{self.winfo_x() + event.x}+{self.winfo_y() + event.y}")
         popup.bind("<FocusOut>", lambda ev: ev.widget.destroy())
@@ -150,14 +159,14 @@ class Wizualizacja(Canvas):
              Wilk(p0),
              Owca(p0),
              Lis(p0),
-            # Zolw(p0),
-            # Antylopa(p0),
+             Zolw(p0),
+             Antylopa(p0),
              Trawa(p0),
              Mlecz(p0),
              Guarana(p0),
-            # WilczeJagody(p0),
-            # BarszczSosnowskiego(p0),
-            # Cyberowca(p0)
+             Wilcze_Jagody(p0),
+             Barszcz_sosnowskiego(p0),
+             Cyberowca(p0)
         ]
 
         if not self.__maCzlowieka():
@@ -166,7 +175,7 @@ class Wizualizacja(Canvas):
         for i in range(len(organizmy)):
             org = organizmy[i]
             Button(popup, text=str(org),
-                   bg=org.rysowanie(),
+                   bg="white",
                    command=lambda o=copy.deepcopy(org): self.__polozOrganizm(o, Wektor2d(event.y, event.x), popup)).pack()
 
     def __polozOrganizm(self, org: Organizm, pos: Wektor2d, main):

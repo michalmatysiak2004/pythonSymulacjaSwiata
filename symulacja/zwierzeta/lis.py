@@ -9,9 +9,7 @@ class Lis(Zwierze):
     def __init__(self, polozenie: Wektor2d):
         super().__init__(polozenie, Lis.SILA, Lis.INICJATYWA)
 
-
-
-    def CzyMaDobryWech(self):
+    def czyMaDobryWech(self):
         return True
 
 
@@ -19,5 +17,3 @@ class Lis(Zwierze):
     def __str__(self):
         return "lis"
 
-    def rysowanie(self) -> str:
-        return "XD"

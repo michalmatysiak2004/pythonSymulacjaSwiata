@@ -22,6 +22,8 @@ class Czlowiek(Zwierze):
 
 
     def akcja(self):
+        if(self.__turySpecjalne > 0):
+            self.getSwiat().getDziennik().wpisz({"Pozostałe tury specjalne: " +  str(self.__turySpecjalne)})
 
         zasieg = 1
         if self.__turySpecjalne > Czlowiek.SPECJALNY_MNIEJ or \
@@ -53,7 +55,9 @@ class Czlowiek(Zwierze):
 
         elif ruch == Swiat.Ruch.SPECJALNY:
 
-            self.__turySpecjalne = Czlowiek.SPECJALNY_TURY if self.__turySpecjalne == 0 else self.__turySpecjalne
+            if(self.__turySpecjalne == 0):
+                self.__turySpecjalne = Czlowiek.SPECJALNY_TURY
+                self.getSwiat().getDziennik().wpisz({"aktywowano umiejestnosc specjalna"})
 
 
     def rysowanie(self) -> str:
